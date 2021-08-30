@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+
+        <% data.forEach(function(item){ %>
+          <div id="container">
+              <div class="row">
+                  <div class="name"><%=item.username%></div><div class="score"><%=item.totalScore%></div>
+                  <!-- <h1>hello</h1> -->
+              </div>
+        </div>
+<% }); %>
+
+  </body>
+</html>
