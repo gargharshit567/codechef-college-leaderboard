@@ -54,129 +54,141 @@ app.post("/", function(req, res) {
   const url = "https://api.codechef.com/rankings/" + contestCode + "?fields=username,totalScore,rating,problemScore&institution=Mugneeram%20Bangur%20Memorial%20Engineering%20College%2C%20Jodhpur";
   //  'https://api.codechef.com/rankings/LTIME99C?fields=username,totalScore&institution=Mugneeram%20Bangur%20Memorial%20Engineering%20College%2C%20Jodhpur',
   const weightage = [[15,30,30,25],[25,20,20,35]];
-
-  axios.request(options).then(function(response) {
-    console.log("coming in axios 1st....");
-    //console.log(response.data.result.data.access_token);
-    access_token = response.data.result.data.access_token;
-    console.log("access_token :"+access_token);
-    axios.request({
-      method: 'GET',
-      url: url,
-      headers: {
-        'content-type': 'application/json',
-        authorization: 'Bearer ' + access_token
-      }
-    }).then(function(result) {
-      //console.log(result.data.result.data.content);
-      users = result.data.result.data.content;
-      //console.log("users : ");
-      //console.log(users);
-      var cnt=1;
-      var rank= users[0].rank;
-      var top_score= parseFloat(users[0].totalScore);
-       total_st= users.length; //new
-      users.forEach(function(user){
-         if(user.rank == rank)user.rank= cnt;
-         else
-         {
-           cnt++;
-           rank= user.rank;
-           user.rank=cnt;
-         }
-         user['problem_solved']= Math.floor(parseInt(user.totalScore/100));
-         user.totalScore = parseFloat(((parseFloat(user.totalScore )* weightage[div-2][cn-1])/(top_score* Math.pow(user.rank,(1.0 / total_st)))*100.0).toFixed(2));
-        if(user.username==="piyush_482000")console.log(user);
-        if(user.username==="harsshar14")console.log(user);
-      });
-
-
-     var debug=0;
-      users.forEach(function(user) {
-        debug++;
-        Members.findOne({
-          username: user.username
-        }, function(err, resu) {
-          if (err)
-            console.log(err);
-          else {
-            if (resu) {
-              //console.log(parseInt(user.totalScore));
-              if(cn!=1)
-              {
-               resu.old_score= resu.L_Score;
-               resu.old_problems= resu.problem_solved;
-               resu.L_Score += user.totalScore;
-               resu.problem_solved += user.problem_solved;
-             }
-             else
-             {
-               resu.old_score= 0;
-               resu.old_problems= 0;
-               resu.L_Score= user.totalScore;
-               resu.problem_solved = user.problem_solved;
-             }
-              resu.L_rank = 0;
-              resu.division = div;
-              resu.rating = user.rating;
-
-              resu.save(function(err) {});
-              //console.log(resu);
-
-            } else {
-
-                const newItem = new Members({
-                username : user.username,
-                L_Score : user.totalScore,
-                old_score : 0,
-                old_problems : 0,
-                L_rank : 0,
-                rating : user.rating,
-                division : div,
-                problem_solved :  user.problem_solved
-
-              });
-              newItem.save();
-
+  const sendRequest = async () => {
+    try {
+        const nothing = await axios.request(options).then(function(response) {
+          console.log("coming in axios 1st....");
+          //console.log(response.data.result.data.access_token);
+          access_token = response.data.result.data.access_token;
+          console.log("access_token :"+access_token);
+          axios.request({
+            method: 'GET',
+            url: url,
+            headers: {
+              'content-type': 'application/json',
+              authorization: 'Bearer ' + access_token
             }
-          }
-        });
-      });
-        console.log("debug :" +debug);
-    }).catch(function(error) {
-      console.error(error);
-    });
-  }).catch(function(error) {
-    console.error(error);
+          }).then(function(result) {
+            //console.log(result.data.result.data.content);
+            users = result.data.result.data.content;
+            //console.log("users : ");
+            //console.log(users);
+            var cnt=1;
+            var rank= users[0].rank;
+            var top_score= parseFloat(users[0].totalScore);
+             total_st= users.length; //new
+            users.forEach(function(user){
+               if(user.rank == rank)user.rank= cnt;
+               else
+               {
+                 cnt++;
+                 rank= user.rank;
+                 user.rank=cnt;
+               }
+               user['problem_solved']= Math.floor(parseInt(user.totalScore/100));
+               user.totalScore = parseInt(((parseFloat(user.totalScore )* weightage[div-2][cn-1])/(top_score* Math.pow(user.rank,(1.0 / total_st)))*100.0));
+              //if(user.username==="piyush_482000")console.log(user);
+              //if(user.username==="harsshar14")console.log(user);
+            });
+            const nothing2=  users.forEach(function(user) {
+              Members.findOne({
+                username: user.username
+              }, function(err, resu) {
+                if (err)
+                  console.log(err);
+                else {
+                  if (resu) {
+                    //console.log(parseInt(user.totalScore));
+                    if(cn!=1)
+                    {
+                     resu.old_score= resu.L_Score;
+                     resu.old_problems= resu.problem_solved;
+                     resu.L_Score += user.totalScore;
+                     resu.problem_solved += user.problem_solved;
+                   }
+                   else
+                   {
+                     resu.old_score= 0;
+                     resu.old_problems= 0;
+                     resu.L_Score= user.totalScore;
+                     resu.problem_solved = user.problem_solved;
+                   }
+                    resu.L_rank = 0;
+                    resu.division = div;
+                    resu.rating = user.rating;
 
-  });
+                    resu.save(function(err) {});
+                    //console.log(resu);
+
+                  } else {
+
+                      const newItem = new Members({
+                      username : user.username,
+                      L_Score : user.totalScore,
+                      old_score : 0,
+                      old_problems : 0,
+                      L_rank : 0,
+                      rating : user.rating,
+                      division : div,
+                      problem_solved :  user.problem_solved
+
+                    });
+                    newItem.save();
+
+                  }
+                }
+              });
+            });
+
+
+          }).catch(function(error) {
+            console.error(error);
+          });
+        }).catch(function(error) {
+          console.error(error);
+
+        });
+    } catch (err) {
+        // Handle Error Here
+        console.error(err);
+    }
+}
+
+sendRequest();
+res.redirect("/");
   console.log("coming in main....")
 
-  res.redirect("/");
+
 });
+
 
 app.get("/admin_only", function(req, res) {
   res.render("admin_only");
 });
 
-
 app.get("/", function(req, res) {
 //console.log(req.query);
 //console.log(Object.keys(req.query).length);
 //console.log(sorted_members);
-Members.find({division:3}).sort({L_Score:-1}).exec (function(err, found) {
+
+async function run() {
+
+
+  // Clear the database every time. This is for the sake of example only,
+  // don't do this in prod :)
+ var sorted_members =[];
+  const docs = await Members.find({division:3}).sort({L_Score:-1});
   // found = found.toArray();
-//  console.log(found);
+  //  console.log(found);
+
+  var found= docs;
+  var found1= [];
   found.forEach(function(item){
-    sorted_members.push(item);
+    found1.push(item);
   });
-  var found1=sorted_members;
+
   //console.log(sorted_members);
   var count=1;
-  if (err)
-    console.log(err);
-  else {
-
     var last= found1[0].L_Score;
     for(var i=1; i<=found1.length ;i++) {
       //const item= found[i-1];
@@ -188,24 +200,30 @@ Members.find({division:3}).sort({L_Score:-1}).exec (function(err, found) {
     found1[i-1].L_rank=count;
 
   }
- sorted_members=found1;
-}
-});
-console.log("home route...");
+  sorted_members= found1;
   var limit= 20,page=1;
   var queries= req.query;
   if(queries.hasOwnProperty("limit")){
     limit= parseInt(queries.limit);
   }
   if(queries.hasOwnProperty("page"))page= parseInt(queries.page);
-  const tmp_arr= sorted_members.slice((page-1)*limit,page*limit);
+  //const tmp_arr= sorted_members.slice((page-1)*limit,page*limit);
+  //console.log("length :"+tmp_arr.length);
   const pages= Math.ceil(sorted_members.length/limit);
+  console.log("length :"+ sorted_members.length );
   const paras= {
     pages:pages,
     limit:limit,
-    page:page
+    page:page,
+
   };
-  res.render("index", {data: tmp_arr, paras:paras}); // new
+  res.render("index", {data: sorted_members, paras:paras});
+}
+run().catch(error => console.log(error.stack));
+
+console.log("home route...");
+
+   // new
 
 });
 

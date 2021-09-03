@@ -20,11 +20,11 @@
       <!-- <h1>hello</h1> -->
     </div>
     <% var item; %>
-    <% for(var i=1;i<=data.length ;i++) {%>
-    <% item= data[i-1]; %>
+    <% for(var i=(paras.page-1)*paras.limit;i<=data.length-1 && i<=paras.page*paras.limit ;i++) {%>
+    <% item= data[i]; %>
     <div id="container">
       <div class="row">
-        <div class="sno"><%= i %></div>
+        <div class="sno"><%= i+1 %></div>
         <div class="name"><%=item.username%></div>
         <div class="score"><%=item.L_Score%></div>
         <div class="rank"><%=item.L_rank%></div>
@@ -38,7 +38,7 @@
   </div>
   <% for(var i=1;i<=paras.pages;i++){%>
 
-  <a  href="\?page=<%=paras.page%>&limit=<%=paras.limit%>"> <div class="pages"> <%=i%> </div> </a>
+  <a  href="\?page=<%=i%>&limit=<%=paras.limit%>"> <div class="pages"> <%=i%> - <%=paras.pages%> </div> </a>
   <% }%>
 </body>
 
