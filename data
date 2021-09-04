@@ -1,0 +1,53 @@
+const nothing2 =  users.forEach(function(user) {
+  const each= Members.findOne({
+    username: user.username
+  }).exec();
+ each.then(function(resu){
+
+    // if (err)
+    //   console.log(err);
+    // else {
+      if (resu) {
+        //console.log(parseInt(user.totalScore));
+        if(cn!=1)
+        {
+         resu.old_score= resu.L_Score;
+         resu.old_problems= resu.problem_solved;
+         resu.L_Score += user.totalScore;
+         resu.problem_solved += user.problem_solved;
+       }
+       else
+       {
+         resu.old_score= 0;
+         resu.old_problems= 0;
+         resu.L_Score= user.totalScore;
+         resu.problem_solved = user.problem_solved;
+       }
+        resu.L_rank = 0;
+        resu.division = div;
+        resu.rating = user.rating;
+
+        resu.save(function(err) {});
+        //console.log(resu);
+
+      } else {
+
+          const newItem = new Members({
+          username : user.username,
+          L_Score : user.totalScore,
+          old_score : 0,
+          old_problems : 0,
+          L_rank : 0,
+          rating : user.rating,
+          division : div,
+          problem_solved :  user.problem_solved
+
+        });
+        newItem.save();
+        debug++;
+      }
+
+  });
+
+});
+  console.log(debug);

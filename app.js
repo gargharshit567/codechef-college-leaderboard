@@ -50,7 +50,7 @@ app.post("/", function(req, res) {
   const contestCode = req.body.contestCode;
   const div = req.body.division;
   //console.log(contestCode);
-  const cn = req.body.contestNumber;
+  const cn = parseInt(req.body.contestNumber);
   const url = "https://api.codechef.com/rankings/" + contestCode + "?fields=username,totalScore,rating,problemScore&institution=Mugneeram%20Bangur%20Memorial%20Engineering%20College%2C%20Jodhpur";
   //  'https://api.codechef.com/rankings/LTIME99C?fields=username,totalScore&institution=Mugneeram%20Bangur%20Memorial%20Engineering%20College%2C%20Jodhpur',
   const weightage = [[15,30,30,25],[25,20,20,35]];
@@ -90,55 +90,23 @@ app.post("/", function(req, res) {
               //if(user.username==="piyush_482000")console.log(user);
               //if(user.username==="harsshar14")console.log(user);
             });
-            const nothing2=  users.forEach(function(user) {
-              Members.findOne({
-                username: user.username
-              }, function(err, resu) {
-                if (err)
-                  console.log(err);
-                else {
-                  if (resu) {
-                    //console.log(parseInt(user.totalScore));
-                    if(cn!=1)
-                    {
-                     resu.old_score= resu.L_Score;
-                     resu.old_problems= resu.problem_solved;
-                     resu.L_Score += user.totalScore;
-                     resu.problem_solved += user.problem_solved;
-                   }
-                   else
-                   {
-                     resu.old_score= 0;
-                     resu.old_problems= 0;
-                     resu.L_Score= user.totalScore;
-                     resu.problem_solved = user.problem_solved;
-                   }
-                    resu.L_rank = 0;
-                    resu.division = div;
-                    resu.rating = user.rating;
+            var debug=0;
+            if(cn!=1){
+             const each= Members.deleteMany({}).exec();
+             each.then();
+           }
+            each.then(function(resu){
+                //console.log(resu);
+                if(cn==1){
+                  resu.forEach(function(result){
+                    result.old_score= result.L_Score;
+                    result.L_Score=0;
+                  });
 
-                    resu.save(function(err) {});
-                    //console.log(resu);
-
-                  } else {
-
-                      const newItem = new Members({
-                      username : user.username,
-                      L_Score : user.totalScore,
-                      old_score : 0,
-                      old_problems : 0,
-                      L_rank : 0,
-                      rating : user.rating,
-                      division : div,
-                      problem_solved :  user.problem_solved
-
-                    });
-                    newItem.save();
-
-                  }
                 }
-              });
+
             });
+
 
 
           }).catch(function(error) {
@@ -155,6 +123,7 @@ app.post("/", function(req, res) {
 }
 
 sendRequest();
+
 res.redirect("/");
   console.log("coming in main....")
 
@@ -171,21 +140,22 @@ app.get("/", function(req, res) {
 //console.log(Object.keys(req.query).length);
 //console.log(sorted_members);
 
-async function run() {
+//async function run() {
 
 
   // Clear the database every time. This is for the sake of example only,
   // don't do this in prod :)
- var sorted_members =[];
-  const docs = await Members.find({division:3}).sort({L_Score:-1});
+  var sorted_members =[];
+  const query = Members.find({division:3}).sort({L_Score:-1}).lean().exec();
   // found = found.toArray();
   //  console.log(found);
-
-  var found= docs;
-  var found1= [];
-  found.forEach(function(item){
-    found1.push(item);
-  });
+  query.then(function(docs){
+    //console.log(docs);
+  var found1= docs;
+  //var found1= [];
+  // found.forEach(function(item){
+  //   found1.push(item);
+  // });
 
   //console.log(sorted_members);
   var count=1;
@@ -218,13 +188,13 @@ async function run() {
 
   };
   res.render("index", {data: sorted_members, paras:paras});
-}
-run().catch(error => console.log(error.stack));
+//}
+//run().catch(error => console.log(error.stack));
 
 console.log("home route...");
 
    // new
-
+});
 });
 
 app.listen(3000, function(req, res) {
