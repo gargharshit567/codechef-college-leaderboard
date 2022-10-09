@@ -1,45 +1,156 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/style.css" >
+    <link rel="icon" href="/favicon.ico" type="image/gif" >
+    <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
+    <title>CodeChef MBM</title>
+  </head>
+  <body>
 
-<body>
+
   <div>
+    <!-- As a heading -->
+    <!-- <nav class="navbar navbar-light bg-default">
+      <div class="flex-container">
+        <a class="navbar-brand" href="#">
+          <img src="logo.png" alt="" width="100" height="84" class="navHeading">
+         <span id="siteName">CodeChef MBM Chapter</span>
+        </a>
+      </div>
+    </nav> -->
+
+    <nav>
+      <div>
+        <a class="navbar-brand" href="#">
+            <img src="/logo.png" alt="" width="150" height="120" class="navHeading">
+        </a>
+      </div>
+      <h1 id="siteName">CodeChef MBM Chapter</h1>
+    </nav>
+
+    <div class="bodyBOX">
+      <div id="box" class="container-fluid background">
+        <h1 style="font-weight: bolder; text-shadow: 2px 2px #c3b289;">Monthly Leaderboard</h1>
+        <div class="pages">
+        <a  href="\?div=2">  <div class="page"> DIVISION 2 </div></a>
+        <a  href="\?div=3">  <div class="page"> DIVISION 3 </div> </a>
+        </div>
+        <div class="leaderboard">
+          <table class="table table-striped">
+          <table class="table ">
+            <thead class="heading">
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">RANK</th>
+                <th scope="col">NAME</th>
+                <th scope="col">SCORE</th>
+                <th scope="col">PROBLEMS </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% var item; %>
+              <% for(var i=(paras.page-1)*paras.limit;i<=data.length-1 && i<paras.page*paras.limit ;i++) {%>
+              <% item= data[i]; %>
+              <tr>
 
 
-    <div class="row">
-      <div class="sno">S.NO.</div>
-      <div class="name">Name</div>
-      <div class="score">Score</div>
-      <div class="rank">Rank</div>
-      <div class="division">division</div>
-      <!-- <h1>hello</h1> -->
-    </div>
-    <% var item; %>
-    <% for(var i=(paras.page-1)*paras.limit;i<=data.length-1 && i<=paras.page*paras.limit ;i++) {%>
-    <% item= data[i]; %>
-    <div id="container">
-      <div class="row">
-        <div class="sno"><%= i+1 %></div>
-        <div class="name"><%=item.username%></div>
-        <div class="score"><%=item.L_Score%></div>
-        <div class="rank"><%=item.L_rank%></div>
-        <div class="division"><%= item.division %></div>
-        <!-- <h1>hello</h1> -->
+
+                  <th ><%= i+1 %></th>
+                  <td >#<%=item.L_rank%></td>
+                <td ><a class="page" href= "https://www.codechef.com/users/<%=item.username%>" target="_blank"> <%=item.username%></a></td>
+                  <td ><%=item.L_Score%></td>
+                  <td ><%=item.problem_solved%></td>
+                  <!-- <h1>hello</h1> -->
+                </tr>
+
+              <% } %>
+
+            </tbody>
+        </div>
+          </table>
+        </table>
+        </div>
       </div>
     </div>
-    <% } %>
+
+      <div class="pages">
+        <% for(var i=1;i<=paras.pages;i++){%>
+
+         <a  href="\?div=<%=paras.div%>&page=<%=i%>&limit=<%=paras.limit%>"> <div class="page"> <%=i%>  </div> </a>
+        <% }%>
+        <!-- <div class="page">
+          <a href="#"><</a>
+        </div>
+        <div class="page">
+          <a href="#">1</a>
+        </div>
+        <div class="page">
+          <a href="#">Last</a>
+        </div>
+        <div class="page">
+          <a href="#">></a>
+        </div> -->
+      </div>
+
+      <div class="page-items">
+
+        <label for="items">Items per page:</label>
+        <select name="items" id="items">
+          <a  href="\?div=<%=paras.div%>&page=<%=i%>&limit=10"><option value="10">10</option></a>
+          <a  href="\?div=<%=paras.div%>&page=<%=i%>&limit=20"><option value="20">20</option></a>
+          <a  href="\?div=<%=paras.div%>&page=<%=i%>&limit=30"><option value="30">30</option></a>
+        </select>
+      </div>
+
+      <footer>
+        <div class="footer-left">
+          <div style="margin-bottom: 5px; font-size: 20px;">
+          <a href="https://www.codechef.com/aboutus/?itm_medium=navmenu&itm_campaign=aboutus" style="color: white; text-decoration: none;">About CodeChef</a>
+          </div>
+          <div >
+            <div style="font-size: 20px; font-weight: bold;">Contact Us: </div>
+            <div class="email">gargharshit567@gmail.com</div>
+            <div class="email">harshitashar14@gmail.com</div>
+            <div class="email">vipulm9649@gmail.com</div>
+            <div class="email">a.manalimathur@gmail.com</div>
+          </div>
+        </div>
+        <div class="created-by">
+          <div style="font-size: 20px; font-weight: bold;">Created By:</div>
+          <div class="names">Harshit Garg</div>
+          <div class="names">Harshita Sharma</div>
+          <div class="names">Vipul Mehra</div>
+          <div class="names">Manali Mathur</div>
+        </div>
+      </footer>
 
 
-  </div>
-  <% for(var i=1;i<=paras.pages;i++){%>
+    <!-- Optional JavaScript; choose one of the two! -->
 
-  <a  href="\?page=<%=i%>&limit=<%=paras.limit%>"> <div class="pages"> <%=i%> - <%=paras.pages%> </div> </a>
-  <% }%>
-</body>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
 
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+    -->
+  </body>
 </html>

@@ -1,0 +1,92 @@
+nav {
+  background-color: #3e200d;
+  display: flex;
+  align-items: center;
+  padding: 15px 50px 15px 50px;
+}
+
+#siteName {
+  color: #fbf4e6;
+  font-size: 40px;
+  font-weight: bold;
+  text-shadow: 6px 6px black;
+}
+
+.bodyBOX {
+  padding: 3rem;
+  background-color: #fbf4e6;
+}
+
+.heading {
+  font-size: 20px;
+}
+
+.pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e6dec9;
+}
+
+.leaderboard {
+  box-shadow: 1px 4px 15px black;
+  margin: 30px 0 30px 0;
+}
+
+.page {
+  padding: 10px;
+  font-weight: 600;
+  color: black;
+}
+.page:hover{
+  text-decoration: underline;
+
+}
+
+a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:active {
+  color: black;
+}
+a:hover {
+  color: black;
+}
+
+.page-items {
+  text-align: center;
+  padding-bottom: 25px;
+  background-color: #e6dec9;
+  font-weight: bold;
+}
+
+footer {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  padding: 2rem 3rem 2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: #3e200d;
+  color: white;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.created-by {
+  display: flex;
+  flex-direction: column;
+}
+
+.names {
+  padding-left: 15px;
+}
+
+.email {
+  padding-left: 15px;
+}

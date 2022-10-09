@@ -64,10 +64,10 @@ app.post("/", async (req, res) => {
       try {
 
 
-        console.log("coming in axios 1st....");
+      //  console.log("coming in axios 1st....");
         //console.log(response.data.result.data.access_token);
         access_token = response.data.result.data.access_token;
-        console.log("access_token :" + access_token);
+        //console.log("access_token :" + access_token);
         const nothing3 = await axios.request({
           method: 'GET',
           url: url,
@@ -82,7 +82,7 @@ app.post("/", async (req, res) => {
 
             console.log("coming in axios 2nd....");
             users = result.data.result.data.content;
-            //console.log("users : ");
+            //console.("users : ");
             //console.log(users);
             var cnt = 1;
             var rank = users[0].rank;
@@ -96,15 +96,15 @@ app.post("/", async (req, res) => {
                 user.rank = cnt;
               }
               user['problem_solved'] = Math.floor(parseInt(user.totalScore / 100));
-              user.totalScore = parseInt(((parseFloat(user.totalScore) * weightage[div - 2][cn - 1]) / (top_score * Math.pow(user.rank, (1.0 / total_st))) * 100.0));
+              user.totalScore = parseInt(((parseFloat(user.totalScore) * weightage[div - 2][cn - 1]) / (top_score * Math.pow(user.rank, (1.0 / total_st))) * 10.0));
               //if(user.username==="piyush_482000")console.log(user);
               //if(user.username==="harsshar14")console.log(user);
             });
             if (cn == 1) {
               //  const updateData= async()=>{
               try {
-                const query2 = await Members.deleteMany({});
-                console.log("after update...");
+                const query2 = await Members.deleteMany({division:div});
+              //  console.log("after update...");
 
               } catch (err) {
                 console.log("querie error ......");
@@ -114,7 +114,7 @@ app.post("/", async (req, res) => {
             }
             var debug = 0;
             const nothing2 = users.forEach(async function(user) {
-              console.log("enterd..\n");
+              //console.log("enterd..\n");
               await Members.findOne({
                 username: user.username
               }, function(err, resu) {
@@ -178,7 +178,7 @@ app.post("/", async (req, res) => {
 
 
     //sendRequest();
-    console.log("coming in main....");
+    //console.log("coming in main....");
     res.send("Data updated succesfully .........");
     //  return res.redirect("/");
 
@@ -205,8 +205,12 @@ app.get("/", async (req, res) => {
   // Clear the database every time. This is for the sake of example only,
   // don't do this in prod :)
   var sorted_members = [];
+  var div=3;
+  if (req.query.hasOwnProperty("div")) {
+    div = parseInt(req.query.div);
+  }
   const docs = await Members.find({
-    division: 3
+    division: div
   }).sort({
     L_Score: -1
   });
@@ -245,11 +249,12 @@ app.get("/", async (req, res) => {
     //const tmp_arr= sorted_members.slice((page-1)*limit,page*limit);
     //console.log("length :"+tmp_arr.length);
     const pages = Math.ceil(sorted_members.length / limit);
-    console.log("length :" + sorted_members.length);
+    //console.log("length :" + sorted_members.length);
     const paras = {
       pages: pages,
       limit: limit,
       page: page,
+      div: div
 
     };
     res.render("index", {
@@ -262,12 +267,12 @@ app.get("/", async (req, res) => {
   //}
   //run().catch(error => console.log(error.stack));
 
-  console.log("home route...");
+//  console.log("home route...");
 
   // new
 
 });
 
-app.listen(3000, function(req, res) {
-  console.log("server started at port 3000");
+app.listen(process.env.PORT||3000, function(req, res) {
+  console.log("server has started ....");
 });
